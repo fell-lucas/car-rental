@@ -40,11 +40,11 @@ instance Exception VehicleException
 menuVehicles :: IO()
 menuVehicles = do
   logoVehicles
-  putStrLn "1 - Cadastrar novo veículo"
-  putStrLn "2 - Alterar dados de veículo"
-  putStrLn "3 - Excluir veículo"
-  putStrLn "4 - Listar veículos"
-  putStrLn "5 - Pesquisar veículo"
+  putStrLn "1 - Cadastrar novo veiculo"
+  putStrLn "2 - Alterar dados de veiculo"
+  putStrLn "3 - Excluir veiculo"
+  putStrLn "4 - Listar veiculos"
+  putStrLn "5 - Pesquisar veiculo"
   putStrLn "0 - Voltar" 
   putStrLn "Opcao: "
   option <- getLine
@@ -58,10 +58,14 @@ selectedOptionVehicles option
     case result of
       Left ex -> do clearScreen; putStrLn $ "\nErro: " ++ show ex; menuVehicles
       Right _ -> menuVehicles
-  | option == 3 = do optionRemoveVehicle; menuVehicles
-  | option == 4 = do lista <- readVehiclesFromJSON; printVehicles lista; menuVehicles
+  | option == 3 = do 
+    result <- try optionRemoveVehicle :: IO (Either VehicleException ())
+    case result of
+      Left ex -> do clearScreen; putStrLn $ "\nErro: " ++ show ex; menuVehicles
+      Right _ -> menuVehicles
+  | option == 4 = do lista <- readVehiclesFromJSON; clearScreen; printVehicles lista; menuVehicles
   | option == 5 = do clearScreen; menuSearch;
-  | otherwise = do putStrLn "\n\nInsira uma opção válida.\n"; menuVehicles
+  | otherwise = do putStrLn "\n\nInsira uma opcao valida.\n"; menuVehicles
 
 menuSearch :: IO()
 menuSearch = do
@@ -185,14 +189,14 @@ optionUpdateVehicle = do
   when (null lista) $ throw NenhumVeiculoCadastrado
 
   clearScreen
-  putStrLn "###Editar um veículo###"
-  putStrLn "Identificador do Veículo: "
+  putStrLn "###Editar um veiculo###"
+  putStrLn "Identificador do Veiculo: "
   vehicleIdEdit <- getLine
   
   let veicReturn = getVehicle (read vehicleIdEdit :: Int) lista
   when (isNothing veicReturn) $ throw VeiculoNaoEncontrado
   let Just justVe = veicReturn
-  putStrLn "Editando veículo: "
+  putStrLn "Editando veiculo: "
   putStrLn $ listVehicle [justVe]
   
   let listaAtualizada = rmVehicle (read vehicleIdEdit :: Int) lista
@@ -247,9 +251,11 @@ optionRemoveVehicle :: IO()
 optionRemoveVehicle = do 
   lista <- readVehiclesFromJSON
   when (null lista) $ throw NenhumVeiculoCadastrado
-  putStrLn "\n\n\n### Remoção de veículo ###\n\n\n"
-  putStrLn "Índice do veículo: "
+  putStrLn "### Remocao de veiculo ###"
+  putStrLn "Indice do veiculo: "
   _vehicleId <- getLine
+  let ve = getVehicle (read _vehicleId :: Int) lista
+  when (isNothing ve) $ throw VeiculoNaoEncontrado
   let listaAtualizada = rmVehicle (read _vehicleId :: Int) lista
   writeVehicleToJSON listaAtualizada
   putStrLn "Lista atualizada:"
@@ -273,7 +279,7 @@ getVehicleViaPlate y (x:xs)  | y == plate x = Just x
                      | otherwise = getVehicleViaPlate y xs
 
 printVehicles :: [Vehicle] -> IO ()
-printVehicles vehicles = putStrLn ("\n\nID - Placa - Categoria - Diária (R$) - Valor do Km (R$)- Marca - Modelo - Cor - Ano - Kms - Estado\n\n" ++ listVehicle vehicles)
+printVehicles vehicles = putStrLn ("\n\nID - Placa - Categoria - Diaria (R$) - Valor do Km (R$)- Marca - Modelo - Cor - Ano - Kms - Estado\n\n" ++ listVehicle vehicles)
 
 listVehicle :: [Vehicle] -> String
 listVehicle [] = ""

@@ -36,7 +36,7 @@ menuCustomers = do
   putStrLn "2 - Alterar dados de cliente"
   putStrLn "3 - Excluir clientes"
   putStrLn "4 - Listar clientes"
-  putStrLn "5 - Pesquisar veículo"
+  putStrLn "5 - Pesquisar cliente"
   putStrLn "0 - voltar"
   putStrLn "Opcao: "
   option <- getLine
@@ -44,10 +44,10 @@ menuCustomers = do
 
 selectedOptionCustomers :: Int -> IO ()
 selectedOptionCustomers opcao
-  | opcao == 1 = do optionAddCustomer; menuCustomers
-  | opcao == 2 = do optionUpdateCustumer; menuCustomers
-  | opcao == 3 = do optionRemoveCustomer; menuCustomers
-  | opcao == 4 = do lista <- readCustomersFromJSON; printCustomers lista; menuCustomers
+  | opcao == 1 = do clearScreen; optionAddCustomer; menuCustomers
+  | opcao == 2 = do clearScreen; optionUpdateCustumer; menuCustomers
+  | opcao == 3 = do lista <- readCustomersFromJSON; clearScreen; printCustomers lista; optionRemoveCustomer; menuCustomers
+  | opcao == 4 = do lista <- readCustomersFromJSON; clearScreen; printCustomers lista; menuCustomers
   | opcao == 5 = do clearScreen; menuSearchCustomers;
   | otherwise = do putStrLn "\n\nInsira uma opção válida.\n"; menuCustomers
 

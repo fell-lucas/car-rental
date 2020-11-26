@@ -69,7 +69,7 @@ selectedOptionRents opcao
       case result of
         Left ex -> do clearScreen; putStrLn $ "\nErro: " ++ show ex; menuRents
         Right _ -> menuRents
-  | opcao == 3 = do list <- readRentFromJSON; printRents list; menuRents
+  | opcao == 3 = do list <- readRentFromJSON; clearScreen; printRents list; menuRents
   | otherwise = putStrLn "Opcao invalida."
 
 -- Rent

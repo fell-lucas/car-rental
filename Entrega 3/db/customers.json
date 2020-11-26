@@ -1,1 +1,20 @@
-[{"customerId":0,"programPoints":10,"cnh":"12345","name":"Xablau atomico"}]
+[
+  {
+    "customerId": 0,
+    "programPoints": 502,
+    "cnh": "39232300985",
+    "name": "Antonio Cesar"
+  },
+  {
+    "customerId": 1,
+    "programPoints": 0,
+    "cnh": "40236116073",
+    "name": "Julio Costa"
+  },
+  {
+    "customerId": 2,
+    "programPoints": 500,
+    "cnh": "39031851176",
+    "name": "Flavia Silva"
+  }
+]
